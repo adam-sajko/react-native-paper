@@ -11,6 +11,7 @@ import type {
   ViewStyle,
 } from 'react-native';
 
+import { ListTokens } from './tokens';
 import { getLeftStyles, getRightStyles } from './utils';
 import type { Style } from './utils';
 import { useInternalTheme } from '../../core/theming';
@@ -184,18 +185,15 @@ const ListItem = ({
         selectable: false,
         ellipsizeMode: descriptionEllipsizeMode,
         color: descriptionColor,
-        fontSize: styles.description.fontSize,
+        fontSize: theme.fonts.bodyMedium.fontSize,
       })
     ) : (
       <Text
+        variant="bodyMedium"
         selectable={false}
         numberOfLines={descriptionNumberOfLines}
         ellipsizeMode={descriptionEllipsizeMode}
-        style={[
-          styles.description,
-          { color: descriptionColor },
-          descriptionStyle,
-        ]}
+        style={[{ color: descriptionColor }, descriptionStyle]}
         onTextLayout={onDescriptionTextLayout}
         maxFontSizeMultiplier={descriptionMaxFontSizeMultiplier}
       >
@@ -205,21 +203,22 @@ const ListItem = ({
   };
 
   const renderTitle = () => {
-    const titleColor = theme.colors.onSurface;
+    const titleColor = theme.colors[ListTokens.headlineColor];
 
     return typeof title === 'function' ? (
       title({
         selectable: false,
         ellipsizeMode: titleEllipsizeMode,
         color: titleColor,
-        fontSize: styles.title.fontSize,
+        fontSize: theme.fonts.bodyLarge.fontSize,
       })
     ) : (
       <Text
+        variant="bodyLarge"
         selectable={false}
         ellipsizeMode={titleEllipsizeMode}
         numberOfLines={titleNumberOfLines}
-        style={[styles.title, { color: titleColor }, titleStyle]}
+        style={[{ color: titleColor }, titleStyle]}
         maxFontSizeMultiplier={titleMaxFontSizeMultiplier}
       >
         {title}
@@ -227,13 +226,17 @@ const ListItem = ({
     );
   };
 
-  const descriptionColor = theme.colors.onSurfaceVariant;
+  const descriptionColor = theme.colors[ListTokens.supportingTextColor];
 
   return (
     <TouchableRipple
       {...rest}
       ref={ref}
-      style={[styles.container, style]}
+      style={[
+        styles.container,
+        description ? styles.containerTwoLine : styles.containerOneLine,
+        style,
+      ]}
       onPress={onPress}
       theme={theme}
       testID={testID}
@@ -270,22 +273,20 @@ ListItem.displayName = 'List.Item';
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 8,
-    paddingRight: 24,
+    paddingRight: ListTokens.trailingSpace,
+  },
+  containerOneLine: {
+    paddingVertical: ListTokens.oneLineVerticalPadding,
+  },
+  containerTwoLine: {
+    paddingVertical: ListTokens.twoLineVerticalPadding,
   },
   row: {
     width: '100%',
     flexDirection: 'row',
-    marginVertical: 6,
-  },
-  title: {
-    fontSize: 16,
-  },
-  description: {
-    fontSize: 14,
   },
   item: {
-    paddingLeft: 16,
+    paddingLeft: ListTokens.leadingSpace,
   },
   content: {
     flexShrink: 1,
