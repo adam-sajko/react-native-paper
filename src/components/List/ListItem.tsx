@@ -167,13 +167,24 @@ const ListItem = ({
   ...rest
 }: Props) => {
   const theme = useInternalTheme(themeOverrides);
-  const [alignToTop, setAlignToTop] = React.useState(false);
+  const [isDescriptionMultiline, setIsDescriptionMultiline] =
+    React.useState(false);
 
   const onDescriptionTextLayout = (
     event: NativeSyntheticEvent<TextLayoutEventData>
   ) => {
     const { nativeEvent } = event;
-    setAlignToTop(nativeEvent.lines.length >= 2);
+    setIsDescriptionMultiline(nativeEvent.lines.length >= 2);
+  };
+
+  const getVerticalPaddingStyle = () => {
+    if (!description) {
+      return styles.containerOneLine;
+    }
+
+    return isDescriptionMultiline
+      ? styles.containerThreeLine
+      : styles.containerTwoLine;
   };
 
   const renderDescription = (
@@ -190,6 +201,7 @@ const ListItem = ({
     ) : (
       <Text
         variant="bodyMedium"
+        theme={theme}
         selectable={false}
         numberOfLines={descriptionNumberOfLines}
         ellipsizeMode={descriptionEllipsizeMode}
@@ -215,6 +227,7 @@ const ListItem = ({
     ) : (
       <Text
         variant="bodyLarge"
+        theme={theme}
         selectable={false}
         ellipsizeMode={titleEllipsizeMode}
         numberOfLines={titleNumberOfLines}
@@ -232,11 +245,7 @@ const ListItem = ({
     <TouchableRipple
       {...rest}
       ref={ref}
-      style={[
-        styles.container,
-        description ? styles.containerTwoLine : styles.containerOneLine,
-        style,
-      ]}
+      style={[styles.container, getVerticalPaddingStyle(), style]}
       onPress={onPress}
       theme={theme}
       testID={testID}
@@ -244,8 +253,8 @@ const ListItem = ({
       <View style={[styles.row, containerStyle]}>
         {left
           ? left({
-              color: descriptionColor,
-              style: getLeftStyles(alignToTop, description),
+              color: theme.colors[ListTokens.leadingIconColor],
+              style: getLeftStyles(isDescriptionMultiline, description),
             })
           : null}
         <View
@@ -260,8 +269,8 @@ const ListItem = ({
         </View>
         {right
           ? right({
-              color: descriptionColor,
-              style: getRightStyles(alignToTop, description),
+              color: theme.colors[ListTokens.trailingIconColor],
+              style: getRightStyles(isDescriptionMultiline, description),
             })
           : null}
       </View>
@@ -280,6 +289,9 @@ const styles = StyleSheet.create({
   },
   containerTwoLine: {
     paddingVertical: ListTokens.twoLineVerticalPadding,
+  },
+  containerThreeLine: {
+    paddingVertical: ListTokens.threeLineVerticalPadding,
   },
   row: {
     width: '100%',
