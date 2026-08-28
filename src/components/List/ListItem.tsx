@@ -177,16 +177,6 @@ const ListItem = ({
     setIsDescriptionMultiline(nativeEvent.lines.length >= 2);
   };
 
-  const getVerticalPaddingStyle = () => {
-    if (!description) {
-      return styles.containerOneLine;
-    }
-
-    return isDescriptionMultiline
-      ? styles.containerThreeLine
-      : styles.containerTwoLine;
-  };
-
   const renderDescription = (
     descriptionColor: ColorValue,
     description?: Description | null
@@ -245,7 +235,11 @@ const ListItem = ({
     <TouchableRipple
       {...rest}
       ref={ref}
-      style={[styles.container, getVerticalPaddingStyle(), style]}
+      style={[
+        styles.container,
+        description ? styles.containerTwoLine : styles.containerOneLine,
+        style,
+      ]}
       onPress={onPress}
       theme={theme}
       testID={testID}
@@ -282,16 +276,15 @@ ListItem.displayName = 'List.Item';
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: ListTokens.verticalPadding,
     paddingRight: ListTokens.trailingSpace,
+    justifyContent: 'center',
   },
   containerOneLine: {
-    paddingVertical: ListTokens.oneLineVerticalPadding,
+    minHeight: ListTokens.oneLineContainerHeight,
   },
   containerTwoLine: {
-    paddingVertical: ListTokens.twoLineVerticalPadding,
-  },
-  containerThreeLine: {
-    paddingVertical: ListTokens.threeLineVerticalPadding,
+    minHeight: ListTokens.twoLineContainerHeight,
   },
   row: {
     width: '100%',
