@@ -3,15 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import type {
   ColorValue,
   GestureResponderEvent,
-  NativeSyntheticEvent,
   StyleProp,
-  TextLayoutEventData,
   TextProps,
   TextStyle,
   ViewStyle,
 } from 'react-native';
 
 import { ListTokens } from './tokens';
+import { useMultilineDescription } from './useMultilineDescription';
 import { ListRowContext, getLeftStyles, getRightStyles } from './utils';
 import type { Style } from './utils';
 import { useInternalTheme } from '../../core/theming';
@@ -167,15 +166,11 @@ const ListItem = ({
   ...rest
 }: Props) => {
   const theme = useInternalTheme(themeOverrides);
-  const [isDescriptionMultiline, setIsDescriptionMultiline] =
-    React.useState(false);
-
-  const onDescriptionTextLayout = (
-    event: NativeSyntheticEvent<TextLayoutEventData>
-  ) => {
-    const { nativeEvent } = event;
-    setIsDescriptionMultiline(nativeEvent.lines.length >= 2);
-  };
+  const {
+    isMultiline: isDescriptionMultiline,
+    contentRef,
+    descriptionProps,
+  } = useMultilineDescription(Boolean(description));
 
   const renderDescription = (
     descriptionColor: ColorValue,
@@ -196,7 +191,7 @@ const ListItem = ({
         numberOfLines={descriptionNumberOfLines}
         ellipsizeMode={descriptionEllipsizeMode}
         style={[{ color: descriptionColor }, descriptionStyle]}
-        onTextLayout={onDescriptionTextLayout}
+        {...descriptionProps}
         maxFontSizeMultiplier={descriptionMaxFontSizeMultiplier}
       >
         {description}
@@ -263,6 +258,7 @@ const ListItem = ({
               })
             : null}
           <View
+            ref={contentRef}
             style={[styles.item, styles.content, contentStyle]}
             testID={testID ? `${testID}-content` : undefined}
           >
