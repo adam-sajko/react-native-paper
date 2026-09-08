@@ -33,7 +33,6 @@ exports[`renders disabled toggle button 1`] = `
       undefined,
     ]
   }
-  testID="icon-button-container"
 >
   <View
     accessibilityState={
@@ -88,7 +87,6 @@ exports[`renders disabled toggle button 1`] = `
         ],
       ]
     }
-    testID="icon-button"
   >
     <View
       style={
@@ -164,7 +162,6 @@ exports[`renders toggle button 1`] = `
       undefined,
     ]
   }
-  testID="icon-button-container"
 >
   <View
     accessibilityState={
@@ -219,7 +216,6 @@ exports[`renders toggle button 1`] = `
         ],
       ]
     }
-    testID="icon-button"
   >
     <View
       style={
@@ -295,7 +291,6 @@ exports[`renders unchecked toggle button 1`] = `
       undefined,
     ]
   }
-  testID="icon-button-container"
 >
   <View
     accessibilityState={
@@ -350,7 +345,6 @@ exports[`renders unchecked toggle button 1`] = `
         ],
       ]
     }
-    testID="icon-button"
   >
     <View
       style={

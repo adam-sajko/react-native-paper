@@ -5,7 +5,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import ToggleButtonGroup from './ToggleButtonGroup';
 import { ToggleButtonRowContext } from './ToggleButtonRowContext';
 import { useInternalTheme } from '../../core/theming';
-import type { ThemeProp } from '../../types';
+import type { ThemeProp } from '../../theme/types';
 
 export type Props = {
   /**

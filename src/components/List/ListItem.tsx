@@ -6,6 +6,7 @@ import type {
   NativeSyntheticEvent,
   StyleProp,
   TextLayoutEventData,
+  TextProps,
   TextStyle,
   ViewStyle,
 } from 'react-native';
@@ -14,15 +15,16 @@ import { ListAccordionContext } from './ListAccordionContext';
 import { getLeftStyles, getRightStyles } from './utils';
 import type { Style } from './utils';
 import { useInternalTheme } from '../../core/theming';
-import type { $RemoveChildren, EllipsizeProp, ThemeProp } from '../../types';
+import type { ThemeProp } from '../../theme/types';
 import TouchableRipple from '../TouchableRipple/TouchableRipple';
+import type { Props as TouchableRippleProps } from '../TouchableRipple/TouchableRipple';
 import Text from '../Typography/Text';
 
 type Title =
   | React.ReactNode
   | ((props: {
       selectable: boolean;
-      ellipsizeMode: EllipsizeProp | undefined;
+      ellipsizeMode: TextProps['ellipsizeMode'];
       color: ColorValue;
       fontSize: number;
     }) => React.ReactNode);
@@ -31,12 +33,15 @@ type Description =
   | React.ReactNode
   | ((props: {
       selectable: boolean;
-      ellipsizeMode: EllipsizeProp | undefined;
+      ellipsizeMode: TextProps['ellipsizeMode'];
       color: ColorValue;
       fontSize: number;
     }) => React.ReactNode);
 
-export type Props = $RemoveChildren<typeof TouchableRipple> & {
+export type Props = Omit<
+  React.PropsWithoutRef<TouchableRippleProps>,
+  'children'
+> & {
   /**
    * Title text for the list item.
    */
@@ -97,13 +102,13 @@ export type Props = $RemoveChildren<typeof TouchableRipple> & {
    *
    * See [`ellipsizeMode`](https://reactnative.dev/docs/text#ellipsizemode)
    */
-  titleEllipsizeMode?: EllipsizeProp;
+  titleEllipsizeMode?: TextProps['ellipsizeMode'];
   /**
    * Ellipsize Mode for the Description.  One of `'head'`, `'middle'`, `'tail'`, `'clip'`.
    *
    * See [`ellipsizeMode`](https://reactnative.dev/docs/text#ellipsizemode)
    */
-  descriptionEllipsizeMode?: EllipsizeProp;
+  descriptionEllipsizeMode?: TextProps['ellipsizeMode'];
   /**
    * Specifies the largest possible scale a title font can reach.
    */
@@ -249,7 +254,7 @@ const ListItem = ({
           : null}
         <View
           style={[styles.item, styles.content, contentStyle]}
-          testID={`${testID}-content`}
+          testID={testID ? `${testID}-content` : undefined}
         >
           {renderTitle()}
 

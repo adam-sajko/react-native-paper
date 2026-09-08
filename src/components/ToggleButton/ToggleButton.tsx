@@ -8,7 +8,7 @@ import { ToggleButtonGroupContext } from './ToggleButtonGroup';
 import { ToggleButtonRowContext } from './ToggleButtonRowContext';
 import { getToggleButtonColor } from './utils';
 import { useInternalTheme } from '../../core/theming';
-import type { ThemeProp } from '../../types';
+import type { ThemeProp } from '../../theme/types';
 import type { IconSource } from '../Icon';
 import IconButton from '../IconButton/IconButton';
 
