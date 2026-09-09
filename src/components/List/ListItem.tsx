@@ -262,10 +262,7 @@ const ListItem = ({
                 style: getLeftStyles(isDescriptionMultiline, description),
               })
             : null}
-          <View
-            style={[styles.item, styles.content, contentStyle]}
-            testID={testID ? `${testID}-content` : undefined}
-          >
+          <View style={[styles.item, styles.content, contentStyle]}>
             {renderTitle()}
 
             {description

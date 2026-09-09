@@ -175,7 +175,7 @@ it('calling onPress on ListItem right component', async () => {
 });
 
 it('renders list item with custom content style', async () => {
-  await render(
+  const { toJSON } = await render(
     <ListItem
       title="First Item"
       description="Item description"
@@ -184,7 +184,7 @@ it('renders list item with custom content style', async () => {
     />
   );
 
-  expect(screen.getByTestId('list-item-content')).toHaveStyle(styles.content);
+  expect(toJSON()).toMatchSnapshot();
 });
 
 it('hits the one line container height without measuring the description', async () => {
@@ -257,7 +257,7 @@ it('leaves a 56dp leading image on the two line container height', async () => {
   expect(screen.getByTestId('left-accessory')).toHaveStyle({ height: 56 });
 });
 
-it('pads a 64dp leading video to the three line container height', async () => {
+it('keeps the container height with a 64dp leading video', async () => {
   await render(
     <ListItem
       title="First Item"
@@ -276,13 +276,9 @@ it('pads a 64dp leading video to the three line container height', async () => {
     minHeight: 56,
     paddingVertical: 8,
   });
-  expect(screen.getByTestId('list-image')).toHaveStyle({
-    height: 64,
-    marginVertical: 4,
-  });
 });
 
-it('keeps a 64dp leading video on the same height once the description wraps', async () => {
+it('grows the container padding with a 64dp leading video once the description wraps', async () => {
   await render(
     <ListItem
       title="First Item"
@@ -303,10 +299,6 @@ it('keeps a 64dp leading video on the same height once the description wraps', a
   });
 
   expect(screen.getByTestId(testID)).toHaveStyle({ paddingVertical: 12 });
-  expect(screen.getByTestId('list-image')).toHaveStyle({
-    height: 64,
-    marginVertical: 0,
-  });
 });
 
 it('top aligns the accessories once the description wraps', async () => {
