@@ -71,20 +71,6 @@ export const useInternalTheme = (
   );
 };
 
-export const defaultThemes = {
-  light: LightTheme,
-  dark: DarkTheme,
-};
-
-export const getTheme = <Scheme extends boolean = false>(
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  isDark: Scheme = false as Scheme
-): (typeof defaultThemes)[Scheme extends true ? 'dark' : 'light'] => {
-  const scheme = isDark ? 'dark' : 'light';
-
-  return defaultThemes[scheme];
-};
-
 export function adaptNavigationTheme<T extends NavigationTheme>(themes: {
   reactNavigationLight: T;
   materialLight?: Theme;
