@@ -260,7 +260,6 @@ const ListItem = ({
           <View
             ref={contentRef}
             style={[styles.item, styles.content, contentStyle]}
-            testID={testID ? `${testID}-content` : undefined}
           >
             {renderTitle()}
 

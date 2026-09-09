@@ -61,7 +61,6 @@ const ListImage = ({
       style={getStyles()}
       source={source}
       accessibilityIgnoresInvertColors
-      testID="list-image"
     />
   );
 };
