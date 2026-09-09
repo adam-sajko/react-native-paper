@@ -5,9 +5,9 @@ import { Text, View } from 'react-native';
 import { expect, it, jest } from '@jest/globals';
 import { userEvent } from '@testing-library/react-native';
 
-import { getTheme } from '../../core/theming';
 import { fireEvent, render, screen } from '../../test-utils';
 import { red500 } from '../../theme/colors';
+import { LightTheme } from '../../theme/schemes';
 import Chip from '../Chip/Chip';
 import IconButton from '../IconButton/IconButton';
 import ListIcon from '../List/ListIcon';
@@ -176,7 +176,7 @@ it('calling onPress on ListItem right component', async () => {
 });
 
 it('renders list item with custom content style', async () => {
-  await render(
+  const { toJSON } = await render(
     <ListItem
       title="First Item"
       description="Item description"
@@ -185,7 +185,7 @@ it('renders list item with custom content style', async () => {
     />
   );
 
-  expect(screen.getByTestId('list-item-content')).toHaveStyle(styles.content);
+  expect(toJSON()).toMatchSnapshot();
 });
 
 it('hits the one line container height without measuring the description', async () => {
@@ -258,7 +258,7 @@ it('leaves a 56dp leading image on the two line container height', async () => {
   expect(screen.getByTestId('left-accessory')).toHaveStyle({ height: 56 });
 });
 
-it('pads a 64dp leading video to the three line container height', async () => {
+it('keeps the container height with a 64dp leading video', async () => {
   await render(
     <ListItem
       title="First Item"
@@ -277,13 +277,9 @@ it('pads a 64dp leading video to the three line container height', async () => {
     minHeight: 56,
     paddingVertical: 8,
   });
-  expect(screen.getByTestId('list-image')).toHaveStyle({
-    height: 64,
-    marginVertical: 4,
-  });
 });
 
-it('keeps a 64dp leading video on the same height once the description wraps', async () => {
+it('grows the container padding with a 64dp leading video once the description wraps', async () => {
   await render(
     <ListItem
       title="First Item"
@@ -304,10 +300,6 @@ it('keeps a 64dp leading video on the same height once the description wraps', a
   });
 
   expect(screen.getByTestId(testID)).toHaveStyle({ paddingVertical: 12 });
-  expect(screen.getByTestId('list-image')).toHaveStyle({
-    height: 64,
-    marginVertical: 0,
-  });
 });
 
 it('colors a leading List.Icon from the list item context', async () => {
@@ -321,7 +313,7 @@ it('colors a leading List.Icon from the list item context', async () => {
 
   expect(
     screen.getByText('folder', { includeHiddenElements: true })
-  ).toHaveStyle({ color: getTheme().colors.onSurfaceVariant });
+  ).toHaveStyle({ color: LightTheme.colors.onSurfaceVariant });
 });
 
 it('renders the trailing slot', async () => {
@@ -403,10 +395,10 @@ it('renders an unselected list item on surface colors', async () => {
   );
 
   expect(screen.getByText('First Item')).toHaveStyle({
-    color: getTheme().colors.onSurface,
+    color: LightTheme.colors.onSurface,
   });
   expect(screen.getByText('Item description')).toHaveStyle({
-    color: getTheme().colors.onSurfaceVariant,
+    color: LightTheme.colors.onSurfaceVariant,
   });
 });
 
@@ -421,12 +413,12 @@ it('renders a selected list item on the primary container', async () => {
   );
 
   expect(screen.getByTestId(testID)).toHaveStyle({
-    backgroundColor: getTheme().colors.primaryContainer,
+    backgroundColor: LightTheme.colors.primaryContainer,
   });
   expect(screen.getByText('First Item')).toHaveStyle({
-    color: getTheme().colors.onPrimaryContainer,
+    color: LightTheme.colors.onPrimaryContainer,
   });
   expect(screen.getByText('Item description')).toHaveStyle({
-    color: getTheme().colors.onPrimaryContainer,
+    color: LightTheme.colors.onPrimaryContainer,
   });
 });

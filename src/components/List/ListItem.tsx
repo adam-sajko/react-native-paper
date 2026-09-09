@@ -322,10 +322,7 @@ const ListItem = ({
         <ListItemContext.Provider value={accessoryContext}>
           <View style={[styles.row, containerStyle]}>
             {renderLeading()}
-            <View
-              style={[styles.item, styles.content, contentStyle]}
-              testID={testID ? `${testID}-content` : undefined}
-            >
+            <View style={[styles.item, styles.content, contentStyle]}>
               {renderTitle()}
 
               {description

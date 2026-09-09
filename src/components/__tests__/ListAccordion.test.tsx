@@ -2,9 +2,9 @@ import { StyleSheet, View } from 'react-native';
 
 import { describe, expect, it } from '@jest/globals';
 
-import { getTheme } from '../../core/theming';
 import { fireEvent, render, screen } from '../../test-utils';
 import { red500 } from '../../theme/colors';
+import { LightTheme } from '../../theme/schemes';
 import ListAccordion from '../List/ListAccordion';
 import ListAccordionGroup from '../List/ListAccordionGroup';
 import ListIcon from '../List/ListIcon';
@@ -128,7 +128,7 @@ describe('ListAccordion', () => {
     );
 
     expect(screen.getByText('Accordion item 1')).toHaveStyle({
-      color: getTheme().colors.onSurface,
+      color: LightTheme.colors.onSurface,
     });
   });
 
@@ -140,7 +140,7 @@ describe('ListAccordion', () => {
     );
 
     expect(screen.getByText('Accordion item 1')).toHaveStyle({
-      color: getTheme().colors.onSurface,
+      color: LightTheme.colors.onSurface,
     });
   });
 
@@ -195,7 +195,7 @@ describe('ListAccordion', () => {
     expect(
       screen.getByText('chevron-down', { includeHiddenElements: true })
     ).toHaveStyle({
-      color: getTheme().colors.onSurface,
+      color: LightTheme.colors.onSurface,
     });
   });
 
@@ -226,10 +226,10 @@ describe('ListAccordion', () => {
     );
 
     expect(screen.getByText('Accordion item 1')).toHaveStyle({
-      color: getTheme().colors.onPrimaryContainer,
+      color: LightTheme.colors.onPrimaryContainer,
     });
     expect(screen.getByText('Supporting')).toHaveStyle({
-      color: getTheme().colors.onPrimaryContainer,
+      color: LightTheme.colors.onPrimaryContainer,
     });
   });
 });
