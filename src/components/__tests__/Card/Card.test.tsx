@@ -33,43 +33,31 @@ describe('Card', () => {
   });
 
   it('renders an outlined card with a custom outline color', async () => {
-    const testID = 'custom-outline-card';
-
-    await render(
+    const { toJSON } = await render(
       <Card
         mode="outlined"
         accessibilityLabel="card"
         theme={{ colors: { outline: 'purple' } }}
-        testID={testID}
       >
         {null}
       </Card>
     );
 
-    expect(screen.getByTestId(`${testID}-outline`)).toHaveStyle({
-      borderColor: 'purple',
-      borderWidth: 1,
-    });
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('renders an outlined card with custom border color', async () => {
-    const testID = 'custom-border-card';
-
-    await render(
+    const { toJSON } = await render(
       <Card
         mode="outlined"
         accessibilityLabel="card"
         style={{ borderColor: Palette.error50 }}
-        testID={testID}
       >
         {null}
       </Card>
     );
 
-    expect(screen.getByTestId(`${testID}-outline`)).toHaveStyle({
-      borderColor: Palette.error50,
-      borderWidth: 1,
-    });
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it('renders with a custom theme background color', async () => {
@@ -92,12 +80,12 @@ describe('Card', () => {
 
   it('renders with a content style', async () => {
     await render(
-      <Card testID="card" contentStyle={styles.contentStyle}>
+      <Card contentStyle={styles.contentStyle}>
         <Text>Content</Text>
       </Card>
     );
 
-    expect(screen.getByTestId('card')).toHaveStyle(styles.contentStyle);
+    expect(screen.getByText('Content').parent).toHaveStyle(styles.contentStyle);
   });
 
   it('does not render a disabled accessibility state', async () => {
