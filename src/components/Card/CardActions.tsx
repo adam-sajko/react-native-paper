@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
+import { CardContext } from './CardContext';
 import { useInternalTheme } from '../../core/theming';
 import type { ThemeProp } from '../../theme/types';
 
@@ -36,9 +37,25 @@ export type Props = ViewProps & {
  */
 const CardActions = ({ theme, style, children, ...rest }: Props) => {
   useInternalTheme(theme);
+  const cardContext = React.useContext(CardContext);
+
+  const cardMarginStyle = cardContext
+    ? cardContext.direction === 'horizontal'
+      ? {
+          marginTop: -cardContext.padding,
+          marginRight: -cardContext.padding,
+          marginBottom: -cardContext.padding,
+        }
+      : {
+          marginLeft: -cardContext.padding,
+          marginRight: -cardContext.padding,
+          marginBottom: -cardContext.padding,
+        }
+    : null;
 
   const containerStyle = [
     styles.container,
+    cardMarginStyle,
     { justifyContent: 'flex-end' } satisfies ViewStyle,
     style,
   ];
@@ -57,7 +74,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 8,
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingBottom: 8,
   },
 });
 

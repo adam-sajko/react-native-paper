@@ -1,6 +1,8 @@
+import * as React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import type { ImageProps, StyleProp, ViewStyle } from 'react-native';
 
+import { CardContext } from './CardContext';
 import { getCardCoverStyle } from './utils';
 import { useInternalTheme } from '../../core/theming';
 import { grey200 } from '../../theme/colors';
@@ -36,6 +38,7 @@ export type Props = ImageProps & {
  */
 const CardCover = ({ style, theme: themeOverrides, ...rest }: Props) => {
   const theme = useInternalTheme(themeOverrides);
+  const cardContext = React.useContext(CardContext);
 
   const flattenedStyles = StyleSheet.flatten<ViewStyle>(style) || {};
   const [, borderRadiusStyles] = splitStyles(
@@ -48,28 +51,44 @@ const CardCover = ({ style, theme: themeOverrides, ...rest }: Props) => {
     borderRadiusStyles,
   });
 
+  const cardMarginStyle = cardContext
+    ? cardContext.direction === 'horizontal'
+      ? {
+          marginTop: -cardContext.padding,
+          marginLeft: -cardContext.padding,
+          marginBottom: -cardContext.padding,
+        }
+      : {
+          marginTop: -cardContext.padding,
+          marginLeft: -cardContext.padding,
+          marginRight: -cardContext.padding,
+        }
+    : null;
+
   return (
-    <View style={[styles.container, coverStyle, style]}>
+    <View style={[styles.container, cardMarginStyle, coverStyle, style]}>
       <Image
+        resizeMode="cover"
+        accessibilityIgnoresInvertColors
         {...rest}
         style={[styles.image, coverStyle]}
-        accessibilityIgnoresInvertColors
       />
     </View>
   );
 };
 
 CardCover.displayName = 'Card.Cover';
+
 const styles = StyleSheet.create({
   container: {
-    height: 195,
+    height: 194,
     backgroundColor: grey200,
     overflow: 'hidden',
   },
   image: {
     flex: 1,
-    height: undefined,
-    width: undefined,
+    height: 'auto',
+    width: 'auto',
     justifyContent: 'flex-end',
   },
 });

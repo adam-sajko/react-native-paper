@@ -266,7 +266,7 @@ describe('getCardCoverStyle - border radius', () => {
 });
 
 describe('CardContent', () => {
-  it('keeps its padding when it follows a cover and a title', async () => {
+  it('uses the Card padding when it follows a cover and a title', async () => {
     await render(
       <Card>
         <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
@@ -277,6 +277,9 @@ describe('CardContent', () => {
       </Card>
     );
 
-    expect(screen.getByTestId('card-content')).toHaveStyle({ padding: 16 });
+    expect(screen.getByTestId('card-content').parent).toHaveStyle({
+      padding: 16,
+      gap: 16,
+    });
   });
 });

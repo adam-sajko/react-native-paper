@@ -134,7 +134,7 @@ const CardExample = () => {
           />
           <Card.Cover
             source={require('../../assets/images/artist-2.jpg')}
-            style={styles.customCoverRadius}
+            style={[styles.customCoverRadius, styles.bottomCover]}
           />
         </Card>
         <Card style={styles.card} mode={selectedMode}>
@@ -238,6 +238,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 24,
+  },
+  bottomCover: {
+    marginTop: 0,
+    marginBottom: -16,
   },
 });
 

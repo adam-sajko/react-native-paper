@@ -189,7 +189,7 @@ e.g.:
 
 #### `Dialog.Actions`
 
-`Dialog.Actions` no longer forces `compact` and `uppercase` on its buttons. Set them on the buttons if you want the old look.
+`Dialog.Actions` no longer injects `compact` on its buttons. To keep the previous behavior, you need to add the `compact` prop to each button:
 
 ```tsx
 // Before (v5)
@@ -199,7 +199,7 @@ e.g.:
 
 // After (v6)
 <Dialog.Actions>
-  <Button compact uppercase onPress={hide}>
+  <Button compact onPress={hide}>
     Done
   </Button>
 </Dialog.Actions>
@@ -350,9 +350,83 @@ const theme = {
 
 ### Card
 
+#### `Card` layout
+
+`Card` and its related components have been reworked. Instead of injecting padding to its children, the `Card` component now adds a padding (`16dp`) around its content as well as a gap (`16dp`) between its children.
+
+For the related components:
+
+- `Card.Cover` and `Card.Actions` now apply negative margins to extend into the Card's edges:
+  - `Card.Cover` applies top, left and right margins for vertical cards and left, top, and bottom margins for horizontal cards.
+  - `Card.Actions` applies bottom, left, and right margins for vertical cards and left, bottom, and right margins for horizontal cards.
+- `Card.Title` and `Card.Content` no longer apply padding around them.
+
+This means, in a typical card layout, the Card will automatically apply the necessary spacing between these sections:
+
+```tsx
+<Card>
+  <Card.Cover source={cover} />
+  <Card.Title title="Card title" />
+  <Card.Content>
+    <Text>Card content</Text>
+  </Card.Content>
+  <Card.Actions>
+    <Button mode="contained">Action</Button>
+    <Button mode="outlined">Another Action</Button>
+  </Card.Actions>
+</Card>
+```
+
+So your existing layouts with the following structure will continue to work as before:
+
+- `Card` without `Card.Cover` or `Card.Actions`.
+- `Card` with `Card.Cover` at the top and/or `Card.Actions` at the bottom.
+
+If you have `Card.Cover` or `Card.Actions` in positions other than the top and bottom respectively, you will need to adjust their margins. For example, for a `Card.Cover` in the middle of the Card, you would need to set its top and bottom margins to zero:
+
+```tsx
+<Card>
+  <Card.Title title="Card title" />
+  <Card.Cover source={cover} style={{ marginTop: 0, marginBottom: 0 }} />
+  <Card.Content>
+    <Text>Card content</Text>
+  </Card.Content>
+</Card>
+```
+
+We have also added a `direction` prop to the `Card` component, which lets you arrange its items horizontally instead of the default vertical layout. So if you have custom `flexDirection` styles on the Card, you should replace them with the `direction` prop.
+
+```tsx
+// Before (v5)
+<Card style={{ flexDirection: 'row' }}>
+  <Card.Cover source={cover} style={{ width: 72, height: 72 }} />
+  <Card.Title title="Card title" />
+  <Card.Content>
+    <Text>Card content</Text>
+  </Card.Content>
+  <Card.Actions>
+    <Button mode="contained">Action</Button>
+    <Button mode="outlined">Another Action</Button>
+  </Card.Actions>
+</Card>
+
+// After (v6)
+<Card direction="horizontal">
+  <Card.Cover source={cover} style={{ width: 72, height: 72 }} />
+  <Card.Title title="Card title" />
+  <Card.Content>
+    <Text>Card content</Text>
+  </Card.Content>
+  <Card.Actions>
+    <Button mode="contained">Action</Button>
+    <Button mode="outlined">Another Action</Button>
+  </Card.Actions>
+</Card>
+```
+
 #### `Card.Actions`
 
-`Card.Actions` no longer styles its buttons for you. It used to force `mode="outlined"` on the first button, `mode="contained"` on the rest, and `compact` on all of them. Set what you need on each button.
+`Card.Actions` no longer injects `mode` on the buttons. To keep the previous behavior, you need to set `mode="outlined"` on the first button and `mode="contained"` on the rest:
 
 ```tsx
 // Before (v5)
@@ -367,10 +441,6 @@ const theme = {
   <Button mode="contained">Ok</Button>
 </Card.Actions>
 ```
-
-#### `Card.Content`
-
-`Card.Content` now has 16dp of padding on every side. It used to drop its top or bottom padding when it sat next to a `Card.Cover` or `Card.Title`, so cards that mix those sections grow a little taller. Pass `style` if you want the tighter spacing back.
 
 ### List
 
