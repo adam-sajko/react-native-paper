@@ -21,6 +21,10 @@ export type Props = Omit<TextProps, 'style'> & {
    * Content of the `Badge`.
    */
   children?: string | number;
+  /**
+   * The largest number to show. A larger number shows as `max+`, for example `99+`.
+   */
+  max?: number;
   style?: StyleProp<AnimatedStyle<TextStyle>>;
   /**
    * @optional
@@ -50,6 +54,7 @@ export type Props = Omit<TextProps, 'style'> & {
  */
 const Badge = ({
   children,
+  max,
   style,
   theme: themeOverrides,
   visible = true,
@@ -62,6 +67,11 @@ const Badge = ({
   } = theme;
 
   const textColor = theme.colors.onError;
+
+  const label =
+    typeof children === 'number' && max && children >= max
+      ? `${max}+`
+      : children;
 
   const isLarge = children != null;
   const badgeSize = isLarge ? LARGE_SIZE : SMALL_SIZE;
@@ -99,7 +109,7 @@ const Badge = ({
       ]}
       {...rest}
     >
-      {children}
+      {label}
     </Animated.Text>
   );
 };
